@@ -53,7 +53,7 @@ This equation shows that range depends on the square of the initial velocity, th
 ### 2. Analysis of the Range
 
 - The maximum range occurs when $\sin(2\theta)$ is maximized, i.e., when $2\theta = 90^\circ$ or $\theta = 45^\circ$.
-- Increasing $ v_0 $ increases the range quadratically.
+- Increasing $v_0$ increases the range quadratically.
 - Higher gravitational acceleration $g$ decreases the range.
 
 ### 3. Practical Applications
