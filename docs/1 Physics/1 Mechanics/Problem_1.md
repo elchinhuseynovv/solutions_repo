@@ -32,13 +32,13 @@ t = \text{time of flight}
 $$
 
 
-The time of flight $ T $ (when the projectile returns to the same height) is given by:
+The time of flight $Tx$ (when the projectile returns to the same height) is given by:
 
 $$
  T = \frac{2v_0 \sin(\theta)}{g}
 $$
 
-The horizontal range $ R $ (total horizontal displacement at $ y = 0 $) is:
+The horizontal range $R$ (total horizontal displacement at $y = 0$) is:
 
 $$
  R = v_0 \cos(\theta) \times T 
@@ -52,9 +52,9 @@ This equation shows that range depends on the square of the initial velocity, th
 
 ### 2. Analysis of the Range
 
-- The maximum range occurs when $ \sin(2\theta) $ is maximized, i.e., when $ 2\theta = 90^\circ $ or $ \theta = 45^\circ $.
+- The maximum range occurs when $\sin(2\theta)$ is maximized, i.e., when $2\theta = 90^\circ$ or $\theta = 45^\circ$.
 - Increasing $ v_0 $ increases the range quadratically.
-- Higher gravitational acceleration $ g $ decreases the range.
+- Higher gravitational acceleration $g$ decreases the range.
 
 ### 3. Practical Applications
 
