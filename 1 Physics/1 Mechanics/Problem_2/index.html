@@ -50,6 +50,20 @@
 </li>
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 2</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#investigating-the-dynamics-of-a-forced-damped-pendulum">Investigating the Dynamics of a Forced Damped Pendulum</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#1-theoretical-foundation">1. Theoretical Foundation</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#2-analysis-of-dynamics">2. Analysis of Dynamics</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#3-practical-applications">3. Practical Applications</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#4-implementation">4. Implementation</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#5-discussion">5. Discussion</a>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -172,6 +186,80 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-2">Problem 2</h1>
+<h2 id="investigating-the-dynamics-of-a-forced-damped-pendulum">Investigating the Dynamics of a Forced Damped Pendulum</h2>
+<h3 id="1-theoretical-foundation">1. Theoretical Foundation</h3>
+<p>The forced damped pendulum is governed by the differential equation:</p>
+<div class="arithmatex">\[
+ \frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\sin\theta = A\cos(\omega t) 
+\]</div>
+<p>where:
+- <span class="arithmatex">\(\theta\)</span> = angular displacement
+- <span class="arithmatex">\(b\)</span> = damping coefficient
+- <span class="arithmatex">\(g\)</span> = gravitational acceleration
+- <span class="arithmatex">\(L\)</span> = length of the pendulum
+- <span class="arithmatex">\(A\)</span> = amplitude of the external driving force
+- <span class="arithmatex">\(\omega\)</span> = frequency of the external driving force
+- <span class="arithmatex">\(t\)</span> = time</p>
+<p>For small angles (<span class="arithmatex">\(\theta \approx \sin\theta\)</span>), the equation simplifies to:</p>
+<p><span class="arithmatex">\(\frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\theta = A\cos(\omega t)\)</span></p>
+<p>The general solution of this equation involves both homogeneous (natural) and particular (forced) solutions. The system exhibits resonance when the driving frequency <span class="arithmatex">\(\omega\)</span> matches the system's natural frequency <span class="arithmatex">\(\sqrt{g/L}\)</span>.</p>
+<h3 id="2-analysis-of-dynamics">2. Analysis of Dynamics</h3>
+<p>Key parameters influencing the system’s behavior:
+- <strong>Damping coefficient (b):</strong> Controls energy dissipation; high values lead to overdamping and slow returns to equilibrium, while low values result in underdamping and oscillations.
+- <strong>Driving amplitude (A):</strong> Determines the intensity of the external force; larger amplitudes lead to more significant displacement and potential chaotic motion.
+- <strong>Driving frequency (<span class="arithmatex">\(\omega\)</span>):</strong> Controls the rate of external driving; resonance occurs when <span class="arithmatex">\(\omega \approx \sqrt{g/L}\)</span>.</p>
+<p>As the parameters change, the system transitions from:
+- <strong>Periodic oscillations:</strong> Regular and predictable motion.
+- <strong>Quasiperiodic behavior:</strong> Motion with two incommensurate frequencies.
+- <strong>Chaotic motion:</strong> Sensitive dependence on initial conditions, leading to unpredictable outcomes.</p>
+<h3 id="3-practical-applications">3. Practical Applications</h3>
+<ul>
+<li><strong>Energy harvesting:</strong> Devices capturing mechanical energy from oscillations.</li>
+<li><strong>Suspension bridges:</strong> Avoiding resonance-induced destructive oscillations.</li>
+<li><strong>Oscillating circuits:</strong> Electrical analogs of forced damped pendulums.</li>
+</ul>
+<h3 id="4-implementation">4. Implementation</h3>
+<p>We simulate the motion of a forced damped pendulum using Python.</p>
+<pre><code class="language-python">import numpy as np
+from scipy.integrate import solve_ivp
+import matplotlib.pyplot as plt
+
+# Parameters
+g, L = 9.81, 1.0      # Gravity and pendulum length
+b, A, omega = 0.5, 1.2, 2.0
+
+# Differential equation
+def pendulum(t, y):
+    theta, omega_ = y
+    dydt = [omega_, -b * omega_ - (g / L) * np.sin(theta) + A * np.cos(omega * t)]
+    return dydt
+
+# Initial conditions and time span
+y0 = [0.1, 0.0]
+t_span = (0, 50)
+t_eval = np.linspace(*t_span, 1000)
+
+# Solve the system
+sol = solve_ivp(pendulum, t_span, y0, t_eval=t_eval)
+
+# Plot results
+plt.figure(figsize=(8, 6))
+plt.plot(sol.t, sol.y[0])
+plt.xlabel('Time (s)')
+plt.ylabel('Angular displacement (rad)')
+plt.title('Forced Damped Pendulum Motion')
+plt.grid(True)
+plt.show()
+</code></pre>
+<h3 id="5-discussion">5. Discussion</h3>
+<p><strong>Limitations:</strong>
+- Assumes small-angle approximation for analytical simplicity.
+- Ignores air resistance and other real-world frictions.</p>
+<p><strong>Extensions:</strong>
+- Include nonlinear damping.
+- Explore non-periodic driving forces.
+- Visualize phase portraits and Poincaré sections.</p>
+<p>This analysis captures the complexity of a forced damped pendulum, bridging theory and computational exploration to reveal intricate dynamics like resonance and chaos.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
