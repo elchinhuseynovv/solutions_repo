@@ -79,6 +79,7 @@ plt.title('Forced Damped Pendulum Motion')
 plt.grid(True)
 plt.show()
 ```
+![alt text](image-1.png)
 
 ### 5. Discussion
 

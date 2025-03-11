@@ -93,6 +93,8 @@ plt.grid(True)
 plt.show()
 ```
 
+![alt text](image.png)
+
 ### 5. Discussion
 
 **Limitations:**
