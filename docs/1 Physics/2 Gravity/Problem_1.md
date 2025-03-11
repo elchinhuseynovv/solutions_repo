@@ -138,5 +138,3 @@ This generalization allows the law to apply to all types of orbits, including hi
 4. **Discussion**: The relationship extends to elliptical orbits and other celestial bodies, making it a universal tool in astronomy.
 
 ---
-
-Let me know if you need further clarification or enhancements!
