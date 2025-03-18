@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kepler's Third Law Simulation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+</head>
+<body>
+    <script>
+        let planets = [
+            { name: "Mercury", radius: 50, period: 88, angle: 0, speed: 2 * Math.PI / 88, color: 'gray' },
+            { name: "Venus", radius: 80, period: 225, angle: 0, speed: 2 * Math.PI / 225, color: 'orange' },
+            { name: "Earth", radius: 110, period: 365, angle: 0, speed: 2 * Math.PI / 365, color: 'blue' },
+            { name: "Mars", radius: 150, period: 687, angle: 0, speed: 2 * Math.PI / 687, color: 'red' },
+            { name: "Jupiter", radius: 200, period: 4333, angle: 0, speed: 2 * Math.PI / 4333, color: 'brown' },
+            { name: "Saturn", radius: 250, period: 10759, angle: 0, speed: 2 * Math.PI / 10759, color: 'yellow' },
+            { name: "Uranus", radius: 300, period: 30687, angle: 0, speed: 2 * Math.PI / 30687, color: 'lightblue' },
+            { name: "Neptune", radius: 350, period: 60190, angle: 0, speed: 2 * Math.PI / 60190, color: 'darkblue' }
+        ];
+
+        function setup() {
+            createCanvas(700, 700);
+        }
+
+        function draw() {
+            background(0);
+            translate(width / 2, height / 2);
+            fill(255, 204, 0);
+            ellipse(0, 0, 30, 30); // Sun
+            
+            for (let planet of planets) {
+                let x = planet.radius * cos(planet.angle);
+                let y = planet.radius * sin(planet.angle);
+                
+                stroke(255);
+                noFill();
+                ellipse(0, 0, 2 * planet.radius, 2 * planet.radius); // Orbit
+                
+                fill(planet.color);
+                noStroke();
+                ellipse(x, y, 10, 10); // Planet
+                
+                planet.angle += planet.speed * 5; // Speed up simulation
+            }
+        }
+    </script>
+</body>
+</html>
