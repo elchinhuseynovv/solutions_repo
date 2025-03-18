@@ -29,6 +29,7 @@ The trajectory of a payload released near Earth depends on its initial velocity 
 
   A special case of an elliptical orbit where the payload's velocity is precisely balanced for a circular path.
 
+
 ---
 
 ### **Numerical Analysis**
