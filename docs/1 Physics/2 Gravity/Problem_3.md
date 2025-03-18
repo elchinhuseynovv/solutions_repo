@@ -11,19 +11,19 @@ When a payload is released from a moving rocket near Earth, its trajectory is de
 The trajectory of a payload released near Earth depends on its initial velocity and direction relative to Earth's gravitational field. The possible trajectories are:
 
 1. **Elliptical Orbit**:
-  -- Occurs when the payload's velocity is less than the escape velocity.
-  -- The payload orbits Earth in an elliptical path.
+  $Occurs when the payload's velocity is less than the escape velocity.$
+  $The payload orbits Earth in an elliptical path.$
 
 2. **Parabolic Trajectory**:
-  -- Occurs when the payload's velocity equals the escape velocity.
-  -- The payload follows an open parabolic path and escapes Earth's gravitational influence.
+  $Occurs when the payload's velocity equals the escape velocity.$
+  $The payload follows an open parabolic path and escapes Earth's gravitational influence.$
 
 3. **Hyperbolic Trajectory**:
-  -- Occurs when the payload's velocity exceeds the escape velocity.
-  -- The payload follows an open hyperbolic path and escapes Earth's gravitational influence.
+  $Occurs when the payload's velocity exceeds the escape velocity.$
+  $The payload follows an open hyperbolic path and escapes Earth's gravitational influence.$
 
 4. **Circular Orbit**:
-  -- A special case of an elliptical orbit where the payload's velocity is precisely balanced for a circular path.
+  $A special case of an elliptical orbit where the payload's velocity is precisely balanced for a circular path.$
 
 ---
 
