@@ -111,7 +111,7 @@ moon_radius = 3.844e8  # Moon's orbital radius (m)
 moon_period = orbital_period(moon_radius)
 print(f"Calculated orbital period for the Moon: {moon_period / (24 * 3600):.2f} days")
 ```
-![alt text](image.png)
+![alt text](image-3.png)
 
 ---
 
