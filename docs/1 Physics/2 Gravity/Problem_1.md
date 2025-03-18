@@ -83,33 +83,51 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Constants
-G = 6.67430e-11  # Gravitational constant (N m^2/kg^2)
-M = 5.972e24     # Mass of Earth (kg)
+G = 6.67430e-11  # Gravitational constant (m^3 kg^-1 s^-2)
+M_sun = 1.989e30  # Mass of the Sun (kg)
 
-# Function to calculate orbital period
-def orbital_period(r):
-    return np.sqrt((4 * np.pi**2 * r**3) / (G * M))
+# Planetary data (approximate values)
+planets = {
+    "Mercury": (5.79e10, 7.60e6),
+    "Venus": (1.08e11, 1.94e7),
+    "Earth": (1.50e11, 3.16e7),
+    "Mars": (2.28e11, 5.94e7),
+    "Jupiter": (7.78e11, 3.74e8),
+    "Saturn": (1.43e12, 9.29e8),
+    "Uranus": (2.87e12, 2.65e9),
+    "Neptune": (4.50e12, 5.20e9)
+}
 
-# Orbital radii (in meters)
-radii = np.linspace(6.371e6, 4e8, 100)  # From Earth's surface to beyond the Moon's orbit
+# Extracting data
+radii = np.array([data[0] for data in planets.values()])  # Orbital radius in meters
+periods = np.array([data[1] for data in planets.values()])  # Orbital period in seconds
 
-# Calculate orbital periods
-periods = orbital_period(radii)
+# Kepler's Third Law check
+radii_cubed = radii ** 3
+periods_squared = periods ** 2
 
-# Plot T^2 vs r^3
-plt.figure(figsize=(10, 6))
-plt.plot(radii**3, periods**2, label="T² vs r³")
-plt.xlabel("Orbital Radius³ (r³) [m³]")
-plt.ylabel("Orbital Period² (T²) [s²]")
-plt.title("Kepler's Third Law: T² ∝ r³")
-plt.grid()
+# Plotting Kepler's Third Law
+plt.figure(figsize=(8, 6))
+plt.scatter(radii_cubed, periods_squared, color='b', label='Planets')
+plt.xlabel('Orbital Radius Cubed (m^3)')
+plt.ylabel('Orbital Period Squared (s^2)')
+plt.title("Kepler's Third Law: T² vs R³")
 plt.legend()
+plt.grid()
 plt.show()
 
-# Example: Moon's orbit
-moon_radius = 3.844e8  # Moon's orbital radius (m)
-moon_period = orbital_period(moon_radius)
-print(f"Calculated orbital period for the Moon: {moon_period / (24 * 3600):.2f} days")
+# Simulating a circular orbit
+fig, ax = plt.subplots(figsize=(6, 6))
+circle = plt.Circle((0, 0), 1, color='b', fill=False)
+ax.add_patch(circle)
+ax.set_xlim(-1.2, 1.2)
+ax.set_ylim(-1.2, 1.2)
+ax.set_xlabel("X Position")
+ax.set_ylabel("Y Position")
+ax.set_title("Circular Orbit Simulation")
+ax.grid()
+plt.show()
+
 ```
 ![alt text](image-3.png)
 
