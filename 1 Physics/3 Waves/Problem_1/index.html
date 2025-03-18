@@ -203,9 +203,9 @@ $$
 where <span class="arithmatex">\(r_i = \sqrt{(x - x_i)^2 + (y - y_i)^2}\)</span> is the distance from the <span class="arithmatex">\(i\)</span>-th source to the point <span class="arithmatex">\((x, y)\)</span>, and <span class="arithmatex">\(\phi_i\)</span> is the initial phase of the <span class="arithmatex">\(i\)</span>-th source.</p>
 <h3 id="step-4-superposition-of-waves">Step 4: Superposition of Waves</h3>
 <p>The total displacement at any point <span class="arithmatex">\((x, y)\)</span> on the water surface is the sum of the displacements from all four sources:
-[
-\eta_{\text{sum}}(x, y, t) = \sum_{i=1}^{4} \eta_i(x, y, t)
-]</p>
+$$
+    \eta_{\text{sum}}(x, y, t) = \sum_{i=1}^{4} \eta_i(x, y, t)
+$$</p>
 <h3 id="step-5-analyze-interference-patterns">Step 5: Analyze Interference Patterns</h3>
 <p>We need to examine the resulting displacement <span class="arithmatex">\(\eta_{\text{sum}}(x, y, t)\)</span> to identify regions of constructive and destructive interference.</p>
 <h3 id="step-6-visualization">Step 6: Visualization</h3>
@@ -221,32 +221,37 @@ omega = 2 * np.pi  # Angular frequency
 L = 2.0  # Side length of the square
 phi = 0  # Initial phase
 
-# Source positions
+# Source positions for a square
 sources = [(L/2, L/2), (-L/2, L/2), (-L/2, -L/2), (L/2, -L/2)]
 
-# Grid for visualization
-x = np.linspace(-2, 2, 500)
-y = np.linspace(-2, 2, 500)
+# Create a grid for visualization
+x = np.linspace(-3, 3, 500)
+y = np.linspace(-3, 3, 500)
 X, Y = np.meshgrid(x, y)
 Z = np.zeros_like(X)
 
-# Time
+# Time (assuming a snapshot at t=0 for simplicity)
 t = 0
 
-# Superposition of waves
-for (x0, y0) in sources:
-    r = np.sqrt((X - x0)**2 + (Y - y0)**2)
-    Z += (A / np.sqrt(r)) * np.cos(k * r - omega * t + phi)
+# Function to calculate wave displacement from a single source
+def wave_displacement(x, y, x0, y0, t):
+    r = np.sqrt((x - x0)**2 + (y - y0)**2)
+    return (A / np.sqrt(r)) * np.cos(k * r - omega * t + phi)
 
-# Plotting
+# Superposition of waves from all sources
+for (x0, y0) in sources:
+    Z += wave_displacement(X, Y, x0, y0, t)
+
+# Plotting the interference pattern
 plt.figure(figsize=(10, 8))
-plt.imshow(Z, extent=(-2, 2, -2, 2), origin='lower', cmap='viridis')
+plt.imshow(Z, extent=(-3, 3, -3, 3), origin='lower', cmap='viridis')
 plt.colorbar(label='Displacement')
 plt.title('Interference Pattern from Four Sources at Square Vertices')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.show()
 </code></pre>
+<p><img alt="alt text" src="../image.png"/></p>
 <h3 id="deliverables">Deliverables</h3>
 <ol>
 <li><strong>Markdown Document</strong>: This document includes the Python script and a detailed explanation of the interference patterns observed.</li>
