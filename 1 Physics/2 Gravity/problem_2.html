@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cosmic Velocities Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        canvas { background: #000; display: block; margin: auto; }
+    </style>
+</head>
+<body>
+    <h1>Cosmic Velocities Calculator</h1>
+    <label for="mass">Mass of Celestial Body (kg):</label>
+    <input type="number" id="mass" value="5.972e24">
+    <br>
+    <label for="radius">Radius of Celestial Body (m):</label>
+    <input type="number" id="radius" value="6.371e6">
+    <br>
+    <button onclick="calculateVelocities()">Calculate</button>
+    
+    <h2>Results</h2>
+    <p>First Cosmic Velocity: <span id="v1">-</span> km/s</p>
+    <p>Second Cosmic Velocity: <span id="v2">-</span> km/s</p>
+    <p>Third Cosmic Velocity: <span id="v3">-</span> km/s</p>
+    
+    <canvas id="orbitCanvas" width="500" height="500"></canvas>
+    
+    <script>
+        const G = 6.67430e-11; // Gravitational constant
+        const vEscSun = 617500; // Escape velocity from Sun at Earth's orbit (m/s)
+        
+        function calculateVelocities() {
+            let mass = parseFloat(document.getElementById("mass").value);
+            let radius = parseFloat(document.getElementById("radius").value);
+            
+            let v1 = Math.sqrt(G * mass / radius) / 1000; // Convert to km/s
+            let v2 = Math.sqrt(2 * G * mass / radius) / 1000;
+            let v3 = Math.sqrt(v2**2 + vEscSun**2) / 1000;
+            
+            document.getElementById("v1").innerText = v1.toFixed(2);
+            document.getElementById("v2").innerText = v2.toFixed(2);
+            document.getElementById("v3").innerText = v3.toFixed(2);
+            
+            animateOrbit(v1);
+        }
+        
+        function animateOrbit(velocity) {
+            let canvas = document.getElementById("orbitCanvas");
+            let ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            let cx = canvas.width / 2;
+            let cy = canvas.height / 2;
+            let radius = 100;
+            let angle = 0;
+            
+            function drawFrame() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.strokeStyle = "white";
+                ctx.stroke();
+                
+                let x = cx + radius * Math.cos(angle);
+                let y = cy + radius * Math.sin(angle);
+                
+                ctx.beginPath();
+                ctx.arc(cx, cy, 10, 0, Math.PI * 2);
+                ctx.fillStyle = "yellow"; // Sun
+                ctx.fill();
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = "blue"; // Orbiting body
+                ctx.fill();
+                
+                angle += velocity / 10000; // Adjust speed
+                requestAnimationFrame(drawFrame);
+            }
+            drawFrame();
+        }
+    </script>
+</body>
+</html>
