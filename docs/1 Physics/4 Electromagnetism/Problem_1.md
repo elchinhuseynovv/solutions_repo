@@ -1,127 +1,127 @@
-# Problem 1
-
 # Simulating the Effects of the Lorentz Force
 
 ## Introduction
 
-The Lorentz force describes the combined electric and magnetic forces acting on charged particles moving within electromagnetic fields. It significantly influences particle trajectories in fields such as plasma physics, astrophysics, particle accelerators, and mass spectrometry. The Lorentz force is mathematically represented as:
+The Lorentz force governs the interaction of charged particles with electric and magnetic fields, described mathematically as:
 
 $$ \mathbf{F} = q\mathbf{E} + q\mathbf{v} \times \mathbf{B} $$
 
-This project provides comprehensive simulations and analyses to deeply explore particle trajectories under various electromagnetic configurations, emphasizing practical applications and theoretical insights.
+Understanding this force is essential in various fields such as particle physics, astrophysics, and engineering technologies like particle accelerators and plasma confinement systems. This simulation project extensively explores the behavior of charged particles under different electromagnetic field conditions.
 
 ## Theory and Background
 
 ### Lorentz Force
 
-The Lorentz force comprises:
+The Lorentz force consists of:
 
-- **Electric Force ($q\mathbf{E}$)**: Accelerates particles parallel to electric fields, impacting particle velocity.
-- **Magnetic Force ($q\mathbf{v} \times \mathbf{B}$)**: Alters particle trajectories without changing their speed by exerting a force perpendicular to both the velocity and magnetic field vectors.
+- **Electric force ($q\mathbf{E}$)**: Acts in the direction of the electric field, changing particle velocity magnitude.
+- **Magnetic force ($q\mathbf{v}\times \mathbf{B}$)**: Perpendicular to both particle velocity and magnetic field, modifying trajectory direction without changing speed.
 
-The particle dynamics under these forces follow Newton’s second law:
+The dynamics of a particle under this force follow Newton's second law:
 
-$$ m \frac{d\mathbf{v}}{dt} = q(\mathbf{E} + \mathbf{v} \times \mathbf{B}) $$
+$$ m \frac{d\mathbf{v}}{dt} = q(\mathbf{E} + \mathbf{v}\times \mathbf{B}) $$
 
-Solving these equations numerically requires methods like Runge-Kutta, enabling detailed trajectory simulations.
+Numerical methods such as the Runge-Kutta method are employed to solve these equations.
 
 ## Exploration of Applications
 
 ### Particle Accelerators
-
-In particle accelerators such as cyclotrons, the Lorentz force is fundamental for particle acceleration and trajectory control. Magnetic fields provide circular trajectories, while electric fields periodically accelerate particles, increasing their energy systematically.
+Charged particles are guided by magnetic fields, achieving high speeds through periodic electric field acceleration, essential for experiments in particle physics.
 
 ### Mass Spectrometry
-
-Mass spectrometers use magnetic fields to differentiate particles by their mass-to-charge ratios. Charged particles follow distinct trajectories based on their masses, facilitating precise particle separation and identification.
+Magnetic fields differentiate particles based on their mass-to-charge ratios, enabling accurate chemical analyses and isotopic identification.
 
 ### Plasma Confinement
-
-Magnetic confinement systems like tokamaks utilize magnetic fields to trap high-energy plasmas. Controlling particle trajectories via magnetic fields is crucial for achieving stable plasma conditions necessary for fusion reactions.
+Magnetic confinement in fusion reactors relies heavily on controlling particle trajectories, maintaining stable plasma conditions necessary for fusion.
 
 ## Simulations
 
-### Python Implementation for Particle Motion
+### Comprehensive Python Implementation
+
+Here is a robust and clear Python implementation illustrating particle trajectories under varied electromagnetic conditions:
 
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
-# Lorentz force equations of motion
+# Define Lorentz force equations
 def lorentz_force(t, state, q, m, E_func, B_func):
-    r, v = state[:3], state[3:]
-    drdt = v
-    dvdt = (q / m) * (E_func(r, t) + np.cross(v, B_func(r, t)))
-    return np.concatenate((drdt, dvdt))
+    pos, vel = state[:3], state[3:]
+    dposdt = vel
+    dveldt = (q/m) * (E_func(pos, t) + np.cross(vel, B_func(pos, t)))
+    return np.concatenate([dposdt, dveldt])
 
-# Field configurations
-# 1. Uniform Magnetic Field
-def E_uniform_zero(r, t): return np.array([0, 0, 0])
-def B_uniform(r, t): return np.array([0, 0, 1])
-
-# 2. Combined Electric and Magnetic Fields
-def E_combined(r, t): return np.array([0, 1e4, 0])
-
-# 3. Crossed Electric and Magnetic Fields
-def E_crossed(r, t): return np.array([1e4, 0, 0])
+# Field scenarios
+field_scenarios = {
+    'Uniform Magnetic Field': (lambda r, t: np.zeros(3), lambda r, t: np.array([0, 0, 1])),
+    'Combined Fields': (lambda r, t: np.array([0, 1e4, 0]), lambda r, t: np.array([0, 0, 1])),
+    'Crossed Fields': (lambda r, t: np.array([1e4, 0, 0]), lambda r, t: np.array([0, 0, 1]))
+}
 
 # Simulation parameters
 q, m = 1.6e-19, 9.11e-31
-r0, v0 = [0, 0, 0], [1e6, 0, 0]
-initial_conditions = np.array(r0 + v0)
-t_span, t_eval = [0, 1e-7], np.linspace(0, 1e-7, 1000)
+initial_state = np.array([0, 0, 0, 1e6, 1e6, 0])
+t_span, t_eval = (0, 5e-8), np.linspace(0, 5e-8, 5000)
 
-# Solving equations for each scenario
-scenarios = {
-    "Uniform Magnetic Field": (E_uniform_zero, B_uniform),
-    "Combined Electric & Magnetic Fields": (E_combined, B_uniform),
-    "Crossed Electric & Magnetic Fields": (E_crossed, B_uniform)
-}
+for scenario, (E_func, B_func) in field_scenarios.items():
+    solution = solve_ivp(lorentz_force, t_span, initial_state, args=(q, m, E_func, B_func), t_eval=t_eval)
 
-for title, (E_func, B_func) in scenarios.items():
-    solution = solve_ivp(lorentz_force, t_span, initial_conditions,
-                         args=(q, m, E_func, B_func), method='RK45', t_eval=t_eval)
+    fig = plt.figure(figsize=(12, 6))
 
-    fig = plt.figure(figsize=(10, 8))
-    ax = fig.add_subplot(111, projection='3d')
-    ax.plot(solution.y[0], solution.y[1], solution.y[2])
-    ax.set(title=title, xlabel='X Position (m)', ylabel='Y Position (m)', zlabel='Z Position (m)')
-    plt.grid()
+    # 3D Trajectory
+    ax = fig.add_subplot(121, projection='3d')
+    ax.plot(solution.y[0], solution.y[1], solution.y[2], label=scenario)
+    ax.set_xlabel('X (m)')
+    ax.set_ylabel('Y (m)')
+    ax.set_zlabel('Z (m)')
+    ax.set_title(f'3D Trajectory - {scenario}')
+    ax.legend()
+
+    # 2D Projection
+    ax2 = fig.add_subplot(122)
+    ax2.plot(solution.y[0], solution.y[1])
+    ax2.set_xlabel('X (m)')
+    ax2.set_ylabel('Y (m)')
+    ax2.set_title(f'2D Projection - {scenario}')
+    ax2.grid(True)
+
     plt.tight_layout()
     plt.show()
 ```
-![alt text](image.png)
+
+![alt text](image-1.png)
 
 ## Parameter Exploration
 
-- **Electric Field ($\mathbf{E}$)**: Changes particle acceleration directly.
-- **Magnetic Field ($\mathbf{B}$)**: Modifies trajectory curvature and Larmor radius.
-- **Initial Velocity ($\mathbf{v}$)**: Alters trajectory shapes, influencing circular, helical, or drift motion.
-- **Particle Charge and Mass ($q, m$)**: Determine the magnitude of Lorentz forces, significantly affecting particle paths.
+Examining how trajectory changes with:
+
+- **Electric field magnitude ($\mathbf{E}$)**
+- **Magnetic field strength ($\mathbf{B}$)**
+- **Initial velocity ($\mathbf{v}$)**
+- **Particle charge and mass ($q,m$)**
+
+helps in understanding particle behavior under various real-world conditions.
 
 ## Visualization
 
-Visualization clearly demonstrates:
+- **Circular trajectory**: Observed clearly in uniform magnetic fields.
+- **Helical trajectory**: Occurs with combined fields.
+- **Drift trajectory**: Highlighted clearly under crossed fields, showcasing constant drift perpendicular to both fields.
 
-- **Circular trajectories** under uniform magnetic fields.
-- **Helical trajectories** under combined electric and magnetic fields.
-- **Drift trajectories** under crossed fields.
+Visualization clearly demonstrates important physical parameters:
 
-Highlighted phenomena:
-
-- **Larmor radius**: radius of circular motion, defined as $ r = \frac{mv}{|q|B} $.
-- **Drift velocity**: steady velocity perpendicular to both $\mathbf{E}$ and $\mathbf{B}$, calculated as $ \mathbf{v_d} = \frac{\mathbf{E} \times \mathbf{B}}{B^2} $.
+- **Larmor Radius**: $r_L = \frac{mv}{qB}$
+- **Drift Velocity**: $v_d = \frac{E \times B}{B^2}$
 
 ## Extensions
 
-Future enhancements include:
+Future simulations may incorporate:
 
-- **Non-uniform fields**: Realistic simulations of magnetic mirrors and traps.
-- **Time-dependent fields**: Modeling dynamic particle environments.
-- **Relativistic effects**: Considering relativistic speeds for high-energy particle simulations.
+- **Non-uniform fields** for realistic plasma containment scenarios.
+- **Time-varying fields** to simulate dynamic environmental interactions.
+- **Relativistic dynamics** for high-speed particle simulations.
 
 ## Conclusion
 
-Through detailed computational simulations and analyses, this project effectively demonstrates the extensive influence and applications of the Lorentz force, providing critical insights into theoretical and practical aspects of electromagnetic particle dynamics.
-
+This detailed simulation effectively illustrates the fundamental and applied aspects of the Lorentz force, providing significant insights into electromagnetic particle dynamics, supporting theoretical understanding and practical applications.
