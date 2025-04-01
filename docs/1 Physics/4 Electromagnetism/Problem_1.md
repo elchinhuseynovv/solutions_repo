@@ -91,6 +91,8 @@ for scenario, (E_func, B_func) in field_scenarios.items():
 ```
 
 ![alt text](image-1.png)
+![alt text](image-2.png)
+![alt text](image-3.png)
 
 ## Parameter Exploration
 
