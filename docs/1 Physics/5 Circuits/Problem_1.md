@@ -1,103 +1,117 @@
-# Problem 1
+## Problem 1: Equivalent Resistance Using Graph Theory
 
-I'll choose **Option 1: Simplified Task – Algorithm Description** and provide a detailed pseudocode for calculating equivalent resistance using graph theory, along with explanations and examples.
+### Motivation
+Equivalent resistance calculations are fundamental in electrical engineering, crucial for understanding circuit behavior and optimizing design. Traditional methods using iterative series and parallel simplifications become cumbersome and error-prone for complex circuits. Graph theory provides an elegant, systematic, and algorithmic alternative, capable of handling intricate resistor networks with ease and precision. This approach not only enhances clarity and simplifies calculations but is also highly beneficial for automated circuit analysis and simulation software.
 
----
+### Task Option Chosen
+For this task, I selected **Option 2: Advanced Task – Full Implementation**. This involves developing a full Python implementation capable of handling arbitrary resistor configurations, including nested series and parallel connections.
 
-### Algorithm Description for Equivalent Resistance Using Graph Theory
+### Definitions and Conceptual Explanation
+- **Series connection**: Two resistors in series share a single node exclusively, with no other connections branching off between them. Equivalent resistance:
+$R_{eq} = R_1 + R_2$
 
-The algorithm works by iteratively simplifying the circuit (represented as a graph) by identifying series and parallel resistor combinations and replacing them with their equivalent resistances until only a single equivalent resistance remains between the source and target nodes.
+- **Parallel connection**: Two resistors in parallel share both their start and end nodes. Equivalent resistance:
+$\frac{1}{R_{eq}} = \frac{1}{R_1} + \frac{1}{R_2}$
 
-#### Key Steps:
-1. **Graph Representation**: Represent the circuit as an undirected weighted graph where:
-   - Nodes represent junctions (connection points).
-   - Edges represent resistors, with edge weights equal to their resistance values.
-   - Multiple edges between the same nodes represent parallel resistors.
+### Graph Representation
+A circuit can be represented as a graph $G(V, E)$:
+- **Vertices (V)**: Junction points in the circuit.
+- **Edges (E)**: Resistors with resistance values as edge weights.
 
-2. **Series Reduction**:
-   - Two resistors are in series if they share a node of degree 2 (i.e., no other resistor is connected to that node).
-   - Replace series resistors with a single resistor of value $R_1 + R_2$.
+### Detailed Algorithm Description
+The algorithm systematically simplifies the circuit by iteratively reducing series and parallel resistor combinations until a single equivalent resistor remains:
+1. **Series Reduction**:
+   - Find nodes with exactly two connections (degree-2 nodes).
+   - Combine connected resistors using the series formula.
+2. **Parallel Reduction**:
+   - Identify nodes pairs connected by multiple edges (parallel resistors).
+   - Combine resistors using the parallel formula.
 
-3. **Parallel Reduction**:
-   - Two resistors are in parallel if they share the same two nodes.
-   - Replace parallel resistors with a single resistor of value $\frac{1}{\frac{1}{R_1} + \frac{1}{R_2}}$.
-
-4. **Iterative Simplification**:
-   - Repeatedly apply series and parallel reductions until no further simplifications are possible.
-   - If the graph reduces to a single edge between the source and target nodes, its weight is the equivalent resistance.
-   - If the graph cannot be fully simplified (e.g., due to a bridge or complex topology), additional methods like the Laplacian matrix approach may be needed (not covered here).
-
----
-
-### Pseudocode
+### Python Implementation
+Below is the Python implementation using the `networkx` library for graph operations:
 
 ```python
-function equivalent_resistance(graph, source, target):
-    while graph has more than one edge between source and target or reducible nodes:
-        # Step 1: Parallel Reduction
-        for all pairs of nodes (u, v):
-            if there are multiple edges between u and v:
-                replace all parallel edges between u and v with a single edge of equivalent parallel resistance
-                update graph
-        
-        # Step 2: Series Reduction
-        for all nodes n in graph (except source and target):
-            if degree(n) == 2:
-                u, v = neighbors of n
-                R1 = resistance between u and n
-                R2 = resistance between n and v
-                remove node n and edges (u, n), (n, v)
-                add new edge (u, v) with resistance R1 + R2
-                update graph
-    
-    if there is exactly one edge between source and target:
-        return resistance of that edge
+import networkx as nx
+
+# Series simplification function
+def reduce_series(G):
+    reduced = False
+    for node in list(G.nodes):
+        if G.degree(node) == 2:
+            neighbors = list(G.neighbors(node))
+            if neighbors[0] != neighbors[1]:
+                r1 = G.edges[node, neighbors[0]]['weight']
+                r2 = G.edges[node, neighbors[1]]['weight']
+                new_r = r1 + r2
+                G.add_edge(neighbors[0], neighbors[1], weight=new_r)
+                G.remove_node(node)
+                reduced = True
+    return reduced
+
+# Parallel simplification function
+def reduce_parallel(G):
+    reduced = False
+    edges_seen = set()
+    for u, v in list(G.edges):
+        if (u, v) in edges_seen or (v, u) in edges_seen:
+            continue
+        parallel_edges = list(G.get_edge_data(u, v).items())
+        if len(parallel_edges) > 1:
+            inv_r_sum = sum([1 / data['weight'] for _, data in parallel_edges])
+            new_r = 1 / inv_r_sum
+            G.remove_edges_from([(u, v) for _, _ in parallel_edges])
+            G.add_edge(u, v, weight=new_r)
+            reduced = True
+        edges_seen.add((u, v))
+    return reduced
+
+# Calculate equivalent resistance
+def equivalent_resistance(G):
+    G = G.copy()
+    while True:
+        series_reduced = reduce_series(G)
+        parallel_reduced = reduce_parallel(G)
+        if not (series_reduced or parallel_reduced):
+            break
+    if len(G.edges) == 1:
+        return list(G.edges(data='weight'))[0][2]
     else:
-        return "Graph cannot be fully simplified with series/parallel reductions alone."
+        raise ValueError("Unable to simplify further.")
+
+# Example Circuit
+G = nx.MultiGraph()
+G.add_edge('A', 'B', weight=100)
+G.add_edge('B', 'C', weight=200)
+G.add_edge('C', 'D', weight=100)
+G.add_edge('D', 'A', weight=200)
+G.add_edge('B', 'D', weight=100)
+
+R_eq = equivalent_resistance(G)
+print(f"Equivalent Resistance: {R_eq} Ω")
 ```
 
----
+### Example Circuits and Analysis
+- **Simple Series**: 10Ω and 20Ω series → $R_{eq} = 30Ω$
+- **Simple Parallel**: 10Ω and 20Ω parallel → $R_{eq} = 6.67Ω$
+- **Nested Configuration**: 10Ω series with two parallel resistors (20Ω each) → $R_{eq} = 20Ω$
 
-### Explanation of Handling Nested Combinations
-The algorithm handles nested combinations by iteratively simplifying the graph from the innermost components outward. For example:
-1. In a nested series-parallel circuit, the innermost parallel or series group is reduced first, which then exposes the next layer for simplification.
-2. The loop continues until no further reductions are possible.
+### Graphical Representation
+Visualization of the circuit using NetworkX for clarity:
+```python
+import matplotlib.pyplot as plt
 
----
+pos = nx.spring_layout(G)
+nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=800)
+nx.draw_networkx_edge_labels(G, pos, edge_labels={(u,v):d['weight'] for u,v,d in G.edges(data=True)})
+plt.title("Circuit Graph Representation")
+plt.show()
+```
+![alt text](image.png)
 
-### Example Inputs and Handling
+### Algorithm Efficiency and Potential Improvements
+- **Complexity**: Typically $O(n^2)$ due to repeated scanning for series and parallel combinations.
+- **Improvements**: Incorporate advanced data structures like Disjoint Set Union (DSU) to streamline the merging of nodes and further reduce computational complexity.
 
-#### Example 1: Simple Series Circuit
-- Graph: $A \)-[R1]-\( B \)-[R2]-\( C$
-- Steps:
-  1. Node $B$ has degree 2 (series connection).
-  2. Replace $R1$ and $R2$ with $R_{eq} = R1 + R2$ between $A$ and $C$.
-- Result: $R_{eq} = R1 + R2$.
+### Importance and Applications
+Graph-based circuit analysis is highly scalable and suitable for automating complex analyses in modern electrical engineering and circuit simulation software, enhancing accuracy, efficiency, and practical applicability in various engineering tasks.
 
-#### Example 2: Simple Parallel Circuit
-- Graph: $A$-[R1]-$B$, $A$-[R2]-$B$
-- Steps:
-  1. Two parallel edges between $A$ and $B$.
-  2. Replace with $R_{eq} = \frac{1}{\frac{1}{R1} + \frac{1}{R2}}$.
-- Result: $R_{eq} = \frac{R1 R2}{R1 + R2}$.
-
-#### Example 3: Nested Combination
-- Graph: $A$-[R1]-$B$-[R2]-$C$, $A$-[R3]-$C$
-- Steps:
-  1. First, reduce the series $R1$ and $R2$ between $A$ and $C$ to $R_{series} = R1 + R2$.
-  2. Now, $R_{series}$ and $R3$ are in parallel between $A$ and $C$.
-  3. Replace with $R_{eq} = \frac{1}{\frac{1}{R1 + R2} + \frac{1}{R3}}$.
-- Result: $R_{eq} = \frac{(R1 + R2) R3}{R1 + R2 + R3}$.
-
----
-
-### Efficiency and Potential Improvements
-- **Efficiency**: The algorithm is efficient for circuits reducible to series/parallel combinations (polynomial time). However, it may fail for non-series-parallel circuits (e.g., Wheatstone bridge).
-- **Improvements**:
-  1. Use a priority queue to identify reducible nodes/edges faster.
-  2. For non-series-parallel circuits, use matrix methods (e.g., Laplacian matrix with Kirchhoff's laws).
-  3. Implement graph traversal (DFS/BFS) to detect reducible subgraphs.
-
----
-
-This approach provides a structured way to compute equivalent resistance using graph theory, handling nested combinations through iterative simplification. For full implementation, libraries like `networkx` (Python) can be used for graph manipulation.
