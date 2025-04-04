@@ -59,7 +59,8 @@ for name, dist_func in distributions.items():
     plot_results(results, population, name)
 ```
 ![alt text](image.png)
-
+![alt text](image-1.png)
+![alt text](image-2.png)
 ### Observations & Discussion
 - **Uniform Distribution**: Initially flat and non-normal, the sampling distributions converge quickly to a bell-shaped curve.
 - **Exponential Distribution**: Highly skewed to begin with, but sample means approach normality as size increases.
