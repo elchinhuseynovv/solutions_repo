@@ -18,7 +18,9 @@ Measure the local gravitational acceleration $g$ using a pendulum setup. Careful
 - Securely attach the weight to the end of the string and fix the other end to a stable point.
 - Measure the length $L$ of the pendulum from the suspension point to the center of the mass. Record the ruler resolution \(\Delta L\) as:
 
-$\Delta L = \frac{\text{Ruler Resolution}}{2}$
+$$
+    \Delta L = \frac{\text{Ruler Resolution}}{2}
+$$
 
 #### 3. Data Collection
 - Displace the pendulum by a small angle (<15°) and release.
@@ -26,7 +28,9 @@ $\Delta L = \frac{\text{Ruler Resolution}}{2}$
 - Compute the average $\overline{T_{10}}$ and standard deviation $\sigma_{T}$.
 - Determine the uncertainty in the mean time:
 
-$\Delta T_{10} = \frac{\sigma_T}{\sqrt{n}} \quad \text{where } n = 10$
+$$
+    \Delta T_{10} = \frac{\sigma_T}{\sqrt{n}} \quad \text{where } n = 10
+$$
 
 ### Calculations
 
