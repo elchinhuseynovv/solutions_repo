@@ -206,7 +206,9 @@
 <h4 id="1-theoretical-foundation">1. Theoretical Foundation</h4>
 <p>To estimate <span class="arithmatex">\( \pi \)</span>, we can use the <strong>Monte Carlo method</strong> with a unit circle inscribed in a square. The idea is to generate random points inside the square and count how many fall inside the circle.</p>
 <p>Since the area of a unit circle is <span class="arithmatex">\(\pi r^2 = \pi\)</span> and the area of the square is <span class="arithmatex">\(4\)</span> (since its sides go from -1 to 1), the ratio of the circle’s area to the square’s area is <span class="arithmatex">\(\pi / 4\)</span>. Therefore, we can estimate <span class="arithmatex">\(\pi\)</span> as:</p>
-<p><span class="arithmatex">\(\pi \approx 4 \times \frac{\text{points inside circle}}{\text{total points}}\)</span></p>
+<div class="arithmatex">\[
+    \pi \approx 4 \times \frac{\text{points inside circle}}{\text{total points}}
+\]</div>
 <h4 id="2-simulation">2. Simulation</h4>
 <pre><code class="language-python">import numpy as np
 import matplotlib.pyplot as plt
@@ -245,9 +247,13 @@ plt.show()
 <h4 id="1-theoretical-foundation_1">1. Theoretical Foundation</h4>
 <p>Buffon’s Needle is a classic probability method for estimating <span class="arithmatex">\(\pi\)</span>. It involves dropping a needle of length <span class="arithmatex">\(L\)</span> on a plane with parallel lines spaced <span class="arithmatex">\(t\)</span> units apart.</p>
 <p>The probability that the needle crosses a line is:</p>
-<p><span class="arithmatex">\(P = \frac{2L}{\pi t} \quad \text{(when } L \leq t)\)</span></p>
+<div class="arithmatex">\[
+    P = \frac{2L}{\pi t} \quad \text{(when } L \leq t)
+\]</div>
 <p>Rearranged to estimate <span class="arithmatex">\( \pi \)</span>:</p>
-<p><span class="arithmatex">\(\pi \approx \frac{2L \cdot N}{t \cdot C}\)</span></p>
+<div class="arithmatex">\[
+    \pi \approx \frac{2L \cdot N}{t \cdot C}
+\]</div>
 <p>Where:
 - <span class="arithmatex">\(L\)</span> = needle length
 - <span class="arithmatex">\(t\)</span> = distance between lines
