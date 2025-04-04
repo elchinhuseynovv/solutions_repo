@@ -86,6 +86,36 @@
 </li>
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 2</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#part-1-estimating-pi-using-a-circle">PART 1: Estimating \(\pi\) Using a Circle</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#1-theoretical-foundation">1. Theoretical Foundation</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#2-simulation">2. Simulation</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#3-visualization">3. Visualization</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#4-analysis">4. Analysis</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#part-2-estimating-pi-using-buffons-needle">PART 2: Estimating \(\pi\) Using Buffon’s Needle</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#1-theoretical-foundation_1">1. Theoretical Foundation</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#2-simulation_1">2. Simulation</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#3-visualization_1">3. Visualization</a>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#4-analysis_1">4. Analysis</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#deliverables">Deliverables</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hints-resources">Hints &amp; Resources</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -171,7 +201,129 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="problem-2">Problem 2</h1>
+<h2 id="problem-estimating-pi-using-simulations">Problem: Estimating <span class="arithmatex">\(\pi\)</span> Using Simulations</h2>
+<h3 id="part-1-estimating-pi-using-a-circle">PART 1: Estimating <span class="arithmatex">\(\pi\)</span> Using a Circle</h3>
+<h4 id="1-theoretical-foundation">1. Theoretical Foundation</h4>
+<p>To estimate <span class="arithmatex">\( \pi \)</span>, we can use the <strong>Monte Carlo method</strong> with a unit circle inscribed in a square. The idea is to generate random points inside the square and count how many fall inside the circle.</p>
+<p>Since the area of a unit circle is <span class="arithmatex">\(\pi r^2 = \pi\)</span> and the area of the square is <span class="arithmatex">\(4\)</span> (since its sides go from -1 to 1), the ratio of the circle’s area to the square’s area is <span class="arithmatex">\(\pi / 4\)</span>. Therefore, we can estimate <span class="arithmatex">\(\pi\)</span> as:</p>
+<p><span class="arithmatex">\(\pi \approx 4 \times \frac{\text{points inside circle}}{\text{total points}}\)</span></p>
+<h4 id="2-simulation">2. Simulation</h4>
+<pre><code class="language-python">import numpy as np
+import matplotlib.pyplot as plt
+
+# Monte Carlo simulation to estimate pi
+def estimate_pi_circle(n_points):
+    x = np.random.uniform(-1, 1, n_points)
+    y = np.random.uniform(-1, 1, n_points)
+    inside_circle = x**2 + y**2 &lt;= 1
+    pi_estimate = 4 * np.sum(inside_circle) / n_points
+    return pi_estimate, x, y, inside_circle
+
+# Run simulation
+n_points = 10000
+pi_est, x_vals, y_vals, in_circle = estimate_pi_circle(n_points)
+print(f"Estimated π: {pi_est}")
+</code></pre>
+<h4 id="3-visualization">3. Visualization</h4>
+<pre><code class="language-python">plt.figure(figsize=(6, 6))
+plt.scatter(x_vals[in_circle], y_vals[in_circle], color='blue', s=1, label='Inside Circle')
+plt.scatter(x_vals[~in_circle], y_vals[~in_circle], color='red', s=1, label='Outside Circle')
+plt.gca().set_aspect('equal')
+plt.title(f"Estimating π Using Monte Carlo\nEstimated π ≈ {pi_est:.5f}")
+plt.legend()
+plt.show()
+</code></pre>
+<p><img alt="alt text" src="../image-3.png"/></p>
+<h4 id="4-analysis">4. Analysis</h4>
+<ul>
+<li>As the number of random points increases, the estimate becomes more accurate.</li>
+<li>The convergence is slow but consistent; doubling the points does not halve the error.</li>
+<li>This method demonstrates the strength of probabilistic approximation, but also its computational limitations.</li>
+</ul>
+<hr/>
+<h3 id="part-2-estimating-pi-using-buffons-needle">PART 2: Estimating <span class="arithmatex">\(\pi\)</span> Using Buffon’s Needle</h3>
+<h4 id="1-theoretical-foundation_1">1. Theoretical Foundation</h4>
+<p>Buffon’s Needle is a classic probability method for estimating <span class="arithmatex">\(\pi\)</span>. It involves dropping a needle of length <span class="arithmatex">\(L\)</span> on a plane with parallel lines spaced <span class="arithmatex">\(t\)</span> units apart.</p>
+<p>The probability that the needle crosses a line is:</p>
+<p><span class="arithmatex">\(P = \frac{2L}{\pi t} \quad \text{(when } L \leq t)\)</span></p>
+<p>Rearranged to estimate <span class="arithmatex">\( \pi \)</span>:</p>
+<p><span class="arithmatex">\(\pi \approx \frac{2L \cdot N}{t \cdot C}\)</span></p>
+<p>Where:
+- <span class="arithmatex">\(L\)</span> = needle length
+- <span class="arithmatex">\(t\)</span> = distance between lines
+- <span class="arithmatex">\(N\)</span> = number of throws
+- <span class="arithmatex">\(C\)</span> = number of crossings</p>
+<h4 id="2-simulation_1">2. Simulation</h4>
+<pre><code class="language-python">import numpy as np
+
+def estimate_pi_buffon(n_throws, L=1.0, t=2.0):
+    x = np.random.uniform(0, t/2, n_throws)  # distance to closest line
+    theta = np.random.uniform(0, np.pi/2, n_throws)  # angle with horizontal
+    crosses = x &lt;= (L/2) * np.sin(theta)
+    C = np.sum(crosses)
+    if C == 0:
+        return None
+    pi_estimate = (2 * L * n_throws) / (t * C)
+    return pi_estimate, x, theta, crosses
+
+# Run simulation
+n_throws = 10000
+pi_buffon, x_vals, theta_vals, cross_flags = estimate_pi_buffon(n_throws)
+print(f"Estimated π via Buffon’s Needle: {pi_buffon:.5f}")
+</code></pre>
+<h4 id="3-visualization_1">3. Visualization</h4>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+
+lines_y = np.arange(0, 10, 2)
+plt.figure(figsize=(6, 6))
+for y in lines_y:
+    plt.axhline(y, color='gray', linestyle='--')
+
+for i in range(200):
+    y_center = np.random.uniform(0, 10)
+    theta = theta_vals[i]
+    x_start = 5 - (np.cos(theta)/2)
+    x_end = 5 + (np.cos(theta)/2)
+    y_start = y_center - (np.sin(theta)/2)
+    y_end = y_center + (np.sin(theta)/2)
+    color = 'red' if cross_flags[i] else 'blue'
+    plt.plot([x_start, x_end], [y_start, y_end], color=color)
+
+plt.title("Buffon’s Needle Simulation")
+plt.xlim(4, 6)
+plt.ylim(0, 10)
+plt.show()
+</code></pre>
+<p><img alt="alt text" src="../image-4.png"/></p>
+<h4 id="4-analysis_1">4. Analysis</h4>
+<ul>
+<li>Buffon’s Needle is elegant but has a <strong>high variance</strong>, meaning estimates can fluctuate.</li>
+<li>Requires a <strong>large number of trials</strong> for accuracy.</li>
+<li>Useful in demonstrating connections between <strong>geometry, probability, and estimation</strong>.</li>
+</ul>
+<hr/>
+<h3 id="deliverables">Deliverables</h3>
+<ul>
+<li>Python scripts for both methods.</li>
+<li>Plots: circle hit/miss and Buffon’s needle visuals.</li>
+<li>Markdown write-up including:</li>
+<li>Theoretical foundations</li>
+<li>Visual and numerical results</li>
+<li>Accuracy and convergence comparisons</li>
+</ul>
+<h3 id="hints-resources">Hints &amp; Resources</h3>
+<ul>
+<li>Use <code>NumPy</code> for randomness and <code>Matplotlib</code> for plotting.</li>
+<li>Buffon’s method requires careful simulation of geometry (angle + distance).</li>
+<li>Monte Carlo circle method is simpler and converges more consistently.</li>
+<li>Run multiple trials or increase iterations to explore accuracy.</li>
+</ul>
+<hr/>
+<h3 id="summary">Summary</h3>
+<p>Both methods estimate <span class="arithmatex">\(\pi\)</span> through randomness:
+- The <strong>circle-based Monte Carlo</strong> method is easier and more consistent.
+- <strong>Buffon’s Needle</strong> is more mathematically elegant but converges slowly.
+Each illustrates important statistical and computational ideas through simulation.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
