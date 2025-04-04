@@ -7,7 +7,9 @@ To estimate \( \pi \), we can use the **Monte Carlo method** with a unit circle 
 
 Since the area of a unit circle is $\pi r^2 = \pi$ and the area of the square is $4$ (since its sides go from -1 to 1), the ratio of the circle’s area to the square’s area is $\pi / 4$. Therefore, we can estimate $\pi$ as:
 
-$\pi \approx 4 \times \frac{\text{points inside circle}}{\text{total points}}$
+$$
+    \pi \approx 4 \times \frac{\text{points inside circle}}{\text{total points}}
+$$
 
 #### 2. Simulation
 ```python
@@ -53,11 +55,15 @@ Buffon’s Needle is a classic probability method for estimating $\pi$. It invol
 
 The probability that the needle crosses a line is:
 
-$P = \frac{2L}{\pi t} \quad \text{(when } L \leq t)$
+$$
+    P = \frac{2L}{\pi t} \quad \text{(when } L \leq t)
+$$
 
 Rearranged to estimate \( \pi \):
 
-$\pi \approx \frac{2L \cdot N}{t \cdot C}$
+$$
+    \pi \approx \frac{2L \cdot N}{t \cdot C}
+$$
 
 Where:
 - $L$ = needle length
