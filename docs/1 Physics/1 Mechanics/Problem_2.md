@@ -21,18 +21,22 @@ where:
 
 For small angles ($\theta \approx \sin\theta$), the equation simplifies to:
 
-$\frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\theta = A\cos(\omega t)$
+$$
+ \frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\theta = A\cos(\omega t)
+$$
 
 The general solution of this equation involves both homogeneous (natural) and particular (forced) solutions. The system exhibits resonance when the driving frequency $\omega$ matches the system's natural frequency $\sqrt{g/L}$.
 
 ### 2. Analysis of Dynamics
 
 Key parameters influencing the system’s behavior:
+
 - **Damping coefficient (b):** Controls energy dissipation; high values lead to overdamping and slow returns to equilibrium, while low values result in underdamping and oscillations.
 - **Driving amplitude (A):** Determines the intensity of the external force; larger amplitudes lead to more significant displacement and potential chaotic motion.
 - **Driving frequency ($\omega$):** Controls the rate of external driving; resonance occurs when $\omega \approx \sqrt{g/L}$.
 
 As the parameters change, the system transitions from:
+
 - **Periodic oscillations:** Regular and predictable motion.
 - **Quasiperiodic behavior:** Motion with two incommensurate frequencies.
 - **Chaotic motion:** Sensitive dependence on initial conditions, leading to unpredictable outcomes.
