@@ -88,10 +88,12 @@ plt.show()
 ### 5. Discussion
 
 **Limitations:**
+
 - Assumes small-angle approximation for analytical simplicity.
 - Ignores air resistance and other real-world frictions.
 
 **Extensions:**
+
 - Include nonlinear damping.
 - Explore non-periodic driving forces.
 - Visualize phase portraits and Poincaré sections.
