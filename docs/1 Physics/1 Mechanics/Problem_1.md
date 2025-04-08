@@ -98,11 +98,13 @@ plt.show()
 ### 5. Discussion
 
 **Limitations:**
+
 - No air resistance considered.
 - Assumes flat terrain.
 - Assumes constant gravitational acceleration.
 
 **Extensions:**
+
 - Incorporate drag force.
 - Simulate uneven landing surfaces.
 - Model varying gravitational fields.
