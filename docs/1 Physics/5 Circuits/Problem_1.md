@@ -19,10 +19,13 @@ A circuit can be represented as a graph $G(V, E)$:
 - **Edges (E)**: Resistors with resistance values as edge weights.
 
 ### Detailed Algorithm Description
+
 The algorithm systematically simplifies the circuit by iteratively reducing series and parallel resistor combinations until a single equivalent resistor remains:
+
 1. **Series Reduction**:
    - Find nodes with exactly two connections (degree-2 nodes).
    - Combine connected resistors using the series formula.
+   
 2. **Parallel Reduction**:
    - Identify nodes pairs connected by multiple edges (parallel resistors).
    - Combine resistors using the parallel formula.
