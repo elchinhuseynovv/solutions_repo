@@ -66,6 +66,7 @@ $$
 $$
 
 Where:
+
 - $L$ = needle length
 - $t$ = distance between lines
 - $N$ = number of throws
