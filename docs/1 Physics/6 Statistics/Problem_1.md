@@ -5,6 +5,7 @@ The Central Limit Theorem (CLT) is one of the most important results in statisti
 
 ### Task Overview
 In this task, we explore the Central Limit Theorem by:
+
 1. Generating populations with different distributions.
 2. Drawing repeated samples of various sizes.
 3. Observing the behavior of the sample means.
