@@ -212,13 +212,19 @@
 - <strong>Vertices (V)</strong>: Junction points in the circuit.
 - <strong>Edges (E)</strong>: Resistors with resistance values as edge weights.</p>
 <h3 id="detailed-algorithm-description">Detailed Algorithm Description</h3>
-<p>The algorithm systematically simplifies the circuit by iteratively reducing series and parallel resistor combinations until a single equivalent resistor remains:
-1. <strong>Series Reduction</strong>:
-   - Find nodes with exactly two connections (degree-2 nodes).
-   - Combine connected resistors using the series formula.
-2. <strong>Parallel Reduction</strong>:
-   - Identify nodes pairs connected by multiple edges (parallel resistors).
-   - Combine resistors using the parallel formula.</p>
+<p>The algorithm systematically simplifies the circuit by iteratively reducing series and parallel resistor combinations until a single equivalent resistor remains:</p>
+<ol>
+<li><strong>Series Reduction</strong>:</li>
+<li>Find nodes with exactly two connections (degree-2 nodes).</li>
+<li>
+<p>Combine connected resistors using the series formula.</p>
+</li>
+<li>
+<p><strong>Parallel Reduction</strong>:</p>
+</li>
+<li>Identify nodes pairs connected by multiple edges (parallel resistors).</li>
+<li>Combine resistors using the parallel formula.</li>
+</ol>
 <h3 id="python-implementation">Python Implementation</h3>
 <p>Below is the Python implementation using the <code>networkx</code> library for graph operations:</p>
 <pre><code class="language-python">import networkx as nx
