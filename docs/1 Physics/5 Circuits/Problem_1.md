@@ -15,7 +15,9 @@ $\frac{1}{R_{eq}} = \frac{1}{R_1} + \frac{1}{R_2}$
 
 ### Graph Representation
 A circuit can be represented as a graph $G(V, E)$:
+
 - **Vertices (V)**: Junction points in the circuit.
+
 - **Edges (E)**: Resistors with resistance values as edge weights.
 
 ### Detailed Algorithm Description
