@@ -11,6 +11,7 @@ $$
 $$
 
 where:
+
 - $\theta$ = angular displacement
 - $b$ = damping coefficient
 - $g$ = gravitational acceleration
