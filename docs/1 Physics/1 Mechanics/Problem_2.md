@@ -53,60 +53,20 @@ As the parameters change, the system transitions from:
 We simulate the motion of a forced damped pendulum using Python.
 
 ```python
-import nbformat as nbf
-
-# Create a new Jupyter notebook
-nb = nbf.v4.new_notebook()
-
-# Markdown and Code cells
-cells = []
-
-# Title
-cells.append(nbf.v4.new_markdown_cell("# Investigating the Dynamics of a Forced Damped Pendulum\n"
-"**Course Project – Physics / Computational Modeling**\n\n"
-"Author: Your Name\nDate: April 2025"))
-
-# Theoretical Background
-cells.append(nbf.v4.new_markdown_cell("## 1. Theoretical Background\n"
-"The motion of a forced damped pendulum is described by the nonlinear second-order ODE:\n\n"
-"\\[ \\frac{d^2\\theta}{dt^2} + b\\frac{d\\theta}{dt} + \\frac{g}{L}\\sin(\\theta) = A\\cos(\\omega t) \\]\n\n"
-"- \\( \\theta(t) \\): Angular displacement  \n"
-"- \\( b \\): Damping coefficient  \n"
-"- \\( A \\): Amplitude of driving force  \n"
-"- \\( \\omega \\): Driving angular frequency  \n"
-"- \\( L \\): Length of pendulum  \n"
-"- \\( g \\): Gravitational acceleration  \n\n"
-"For small oscillations (\\( \\theta \\ll 1 \\)), we approximate \\( \\sin\\theta \\approx \\theta \\), yielding a linearized system.\n\n"
-"Resonance occurs when \\( \\omega \\approx \\omega_0 = \\sqrt{\\frac{g}{L}} \\)."))
-
-# Practical Applications
-cells.append(nbf.v4.new_markdown_cell("## 2. Practical Applications\n"
-"Real-world systems that behave like a forced damped pendulum include:\n"
-"- Suspension bridges and structural dynamics\n"
-"- Energy harvesting devices\n"
-"- RLC electrical circuits\n"
-"- Pendulum clocks\n"
-"- Human gait in biomechanics"))
-
-# Python Implementation
-cells.append(nbf.v4.new_markdown_cell("## 3. Python Implementation\n"
-"This code simulates the dynamics of the forced damped pendulum using `solve_ivp` from SciPy."))
-
-# Code cell with implementation
-code = '''import numpy as np
+import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
 # Constants
-g = 9.81  # gravitational acceleration
+g = 9.81  # gravitational acceleration (m/s^2)
 
-# Pendulum ODE
+# Pendulum differential equation
 def forced_damped_pendulum(t, y, b, A, omega, L):
     theta, omega_ = y
     dydt = [omega_, -b * omega_ - (g / L) * np.sin(theta) + A * np.cos(omega * t)]
     return dydt
 
-# Simulation parameters
+# Define different scenarios to study dynamics
 simulations = [
     {"b": 0.2, "A": 1.2, "omega": 2.0, "L": 1.0, "label": "Underdamped"},
     {"b": 1.5, "A": 1.2, "omega": 2.0, "L": 1.0, "label": "Overdamped"},
@@ -114,20 +74,20 @@ simulations = [
     {"b": 0.5, "A": 1.2, "omega": 3.0, "L": 1.0, "label": "Higher Frequency"},
 ]
 
-# Time span and initial condition
 t_span = (0, 50)
 t_eval = np.linspace(*t_span, 5000)
 y0 = [0.1, 0.0]
 
-# Run simulations
 results = []
+
 for sim in simulations:
     sol = solve_ivp(forced_damped_pendulum, t_span, y0, t_eval=t_eval,
                     args=(sim["b"], sim["A"], sim["omega"], sim["L"]))
     results.append((sim["label"], sol.t, sol.y[0], sol.y[1]))
 
-# Plot results
+# Plot Results
 fig, axs = plt.subplots(len(results), 2, figsize=(12, 10))
+
 for i, (label, t, theta, omega_) in enumerate(results):
     axs[i, 0].plot(t, theta)
     axs[i, 0].set_title(f"{label}: θ(t)")
@@ -142,27 +102,8 @@ for i, (label, t, theta, omega_) in enumerate(results):
     axs[i, 1].grid(True)
 
 plt.tight_layout()
-plt.show()'''
-cells.append(nbf.v4.new_code_cell(code))
+plt.show()
 
-# Discussion
-cells.append(nbf.v4.new_markdown_cell("## 4. Discussion\n"
-"- The system shows various types of motion: periodic, overdamped, quasiperiodic, and chaotic depending on parameters.\n"
-"- Phase portraits reveal the structure and stability of trajectories.\n"
-"- The model assumes small-angle approximation and neglects real-world frictions beyond linear damping.\n\n"
-"### Extensions:\n"
-"- Use Poincaré sections and bifurcation diagrams to study chaos.\n"
-"- Include nonlinear damping or time-varying forces.\n"
-"- Compare numerical and analytical solutions under linear assumptions."))
-
-# Save notebook
-nb['cells'] = cells
-output_path = "/mnt/data/Forced_Damped_Pendulum_Project.ipynb"
-
-with open(output_path, 'w') as f:
-    nbf.write(nb, f)
-
-output_path
 ```
 ![alt text](image-1.png)
 
