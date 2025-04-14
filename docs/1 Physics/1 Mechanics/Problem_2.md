@@ -89,21 +89,16 @@ The forced damped pendulum model applies to many real-world systems:
 
 We simulate the system using the `solve_ivp` function from SciPy, varying the damping coefficient $b$, driving amplitude $A$, and driving frequency $\omega$ to observe different behaviors of the pendulum.
 
----
-
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
-
 # Constants
 g = 9.81  # gravitational acceleration (m/s^2)
-
 # Pendulum differential equation
 def forced_damped_pendulum(t, y, b, A, omega, L):
     theta, omega_ = y
     dydt = [omega_, -b * omega_ - (g / L) * np.sin(theta) + A * np.cos(omega * t)]
     return dydt
-
 # Define different scenarios to study dynamics
 simulations = [
     {"b": 0.2, "A": 1.2, "omega": 2.0, "L": 1.0, "label": "Underdamped"},
@@ -122,7 +117,6 @@ for sim in simulations:
     sol = solve_ivp(forced_damped_pendulum, t_span, y0, t_eval=t_eval,
                     args=(sim["b"], sim["A"], sim["omega"], sim["L"]))
     results.append((sim["label"], sol.t, sol.y[0], sol.y[1]))
-
 # Plot Results
 fig, axs = plt.subplots(len(results), 2, figsize=(12, 10))
 
@@ -138,12 +132,10 @@ for i, (label, t, theta, omega_) in enumerate(results):
     axs[i, 1].set_xlabel("θ (rad)")
     axs[i, 1].set_ylabel("ω (rad/s)")
     axs[i, 1].grid(True)
-
 plt.tight_layout()
 plt.show()
 
 
-![alt text](image-2.png)
 
 
 
