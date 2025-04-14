@@ -51,16 +51,28 @@
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 2</a>
 <ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="#investigating-the-dynamics-of-a-forced-damped-pendulum">Investigating the Dynamics of a Forced Damped Pendulum</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#1-theoretical-foundation">1. Theoretical Foundation</a>
 <ul>
-<li class="toctree-l4"><a class="reference internal" href="#1-theoretical-foundation">1. Theoretical Foundation</a>
+<li class="toctree-l4"><a class="reference internal" href="#governing-equation-of-the-system">Governing Equation of the System:</a>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="#2-analysis-of-dynamics">2. Analysis of Dynamics</a>
+<li class="toctree-l4"><a class="reference internal" href="#small-angle-approximation">Small Angle Approximation:</a>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="#3-practical-applications">3. Practical Applications</a>
+<li class="toctree-l4"><a class="reference internal" href="#resonance-condition">Resonance Condition:</a>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="#4-implementation">4. Implementation</a>
+</ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="#5-discussion">5. Discussion</a>
+<li class="toctree-l3"><a class="reference internal" href="#2-analysis-of-system-dynamics">2. Analysis of System Dynamics</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#types-of-motion-observed">Types of Motion Observed:</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3-practical-applications">3. Practical Applications</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#4-python-implementation-for-simulation">4. Python Implementation for Simulation</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description:</a>
 </li>
 </ul>
 </li>
@@ -187,92 +199,175 @@
 <div class="section" itemprop="articleBody">
 <h1 id="problem-2">Problem 2</h1>
 <h2 id="investigating-the-dynamics-of-a-forced-damped-pendulum">Investigating the Dynamics of a Forced Damped Pendulum</h2>
-<h3 id="1-theoretical-foundation">1. Theoretical Foundation</h3>
-<p>The forced damped pendulum is governed by the differential equation:</p>
+<hr/>
+<h2 id="1-theoretical-foundation">1. Theoretical Foundation</h2>
+<h3 id="governing-equation-of-the-system">Governing Equation of the System:</h3>
+<p>The motion of a forced damped pendulum is described by the second-order nonlinear ordinary differential equation:</p>
 <div class="arithmatex">\[
- \frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\sin\theta = A\cos(\omega t) 
+ \frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\sin\theta = A\cos(\omega t)
 \]</div>
-<p>where:</p>
+<p>Where:</p>
 <ul>
-<li><span class="arithmatex">\(\theta\)</span> = angular displacement</li>
-<li><span class="arithmatex">\(b\)</span> = damping coefficient</li>
-<li><span class="arithmatex">\(g\)</span> = gravitational acceleration</li>
-<li><span class="arithmatex">\(L\)</span> = length of the pendulum</li>
-<li><span class="arithmatex">\(A\)</span> = amplitude of the external driving force</li>
-<li><span class="arithmatex">\(\omega\)</span> = frequency of the external driving force</li>
-<li><span class="arithmatex">\(t\)</span> = time</li>
+<li><span class="arithmatex">\(\theta(t)\)</span> — Angular displacement of the pendulum  </li>
+<li><span class="arithmatex">\(b\)</span> — Damping coefficient representing energy dissipation (friction, air resistance)  </li>
+<li><span class="arithmatex">\(g\)</span> — Acceleration due to gravity  </li>
+<li><span class="arithmatex">\(L\)</span> — Length of the pendulum  </li>
+<li><span class="arithmatex">\(A\)</span> — Amplitude of the external driving force  </li>
+<li><span class="arithmatex">\(\omega\)</span> — Angular frequency of the external periodic driving force  </li>
 </ul>
-<p>For small angles (<span class="arithmatex">\(\theta \approx \sin\theta\)</span>), the equation simplifies to:</p>
+<hr/>
+<h3 id="small-angle-approximation">Small Angle Approximation:</h3>
+<p>For small oscillations (<span class="arithmatex">\(\theta \approx 0\)</span>), we can linearize the system using <span class="arithmatex">\(\sin\theta \approx \theta\)</span>. This gives a linear differential equation:</p>
 <div class="arithmatex">\[
  \frac{d^2\theta}{dt^2} + b\frac{d\theta}{dt} + \frac{g}{L}\theta = A\cos(\omega t)
 \]</div>
-<p>The general solution of this equation involves both homogeneous (natural) and particular (forced) solutions. The system exhibits resonance when the driving frequency <span class="arithmatex">\(\omega\)</span> matches the system's natural frequency <span class="arithmatex">\(\sqrt{g/L}\)</span>.</p>
-<h3 id="2-analysis-of-dynamics">2. Analysis of Dynamics</h3>
-<p>Key parameters influencing the system’s behavior:</p>
+<p>This linearized form allows us to analytically discuss resonance and energy behavior in the system.</p>
+<hr/>
+<h3 id="resonance-condition">Resonance Condition:</h3>
+<p>Resonance occurs when the driving frequency matches the natural frequency of the pendulum. The natural frequency is given by:</p>
+<div class="arithmatex">\[
+ \omega_0 = \sqrt{\frac{g}{L}}
+\]</div>
+<p>At resonance (<span class="arithmatex">\(\omega \approx \omega_0\)</span>), the system absorbs maximum energy from the driving force, leading to large amplitude oscillations — this is a critical phenomenon in both physics and engineering.</p>
+<hr/>
+<h2 id="2-analysis-of-system-dynamics">2. Analysis of System Dynamics</h2>
+<p>The dynamics of the forced damped pendulum strongly depend on the following key parameters:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Influence on the System Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Damping Coefficient (<span class="arithmatex">\(b\)</span>)</td>
+<td>Controls energy dissipation. Large <span class="arithmatex">\(b\)</span> leads to overdamping (motion dies out quickly), small <span class="arithmatex">\(b\)</span> allows sustained oscillations or even chaos.</td>
+</tr>
+<tr>
+<td>Driving Amplitude (<span class="arithmatex">\(A\)</span>)</td>
+<td>Higher values of <span class="arithmatex">\(A\)</span> can lead to stronger oscillations, possible chaotic behavior, and sensitivity to initial conditions.</td>
+</tr>
+<tr>
+<td>Driving Frequency (<span class="arithmatex">\(\omega\)</span>)</td>
+<td>Near resonance, oscillations are amplified. Far from resonance, oscillations remain limited.</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h3 id="types-of-motion-observed">Types of Motion Observed:</h3>
 <ul>
-<li><strong>Damping coefficient (b):</strong> Controls energy dissipation; high values lead to overdamping and slow returns to equilibrium, while low values result in underdamping and oscillations.</li>
-<li><strong>Driving amplitude (A):</strong> Determines the intensity of the external force; larger amplitudes lead to more significant displacement and potential chaotic motion.</li>
-<li><strong>Driving frequency (<span class="arithmatex">\(\omega\)</span>):</strong> Controls the rate of external driving; resonance occurs when <span class="arithmatex">\(\omega \approx \sqrt{g/L}\)</span>.</li>
+<li>Periodic Motion — Regular oscillations repeating in time  </li>
+<li>Quasiperiodic Motion — Oscillations with two or more frequencies  </li>
+<li>Chaotic Motion — Highly sensitive to initial conditions; non-repeating, complex trajectories  </li>
 </ul>
-<p>As the parameters change, the system transitions from:</p>
-<ul>
-<li><strong>Periodic oscillations:</strong> Regular and predictable motion.</li>
-<li><strong>Quasiperiodic behavior:</strong> Motion with two incommensurate frequencies.</li>
-<li><strong>Chaotic motion:</strong> Sensitive dependence on initial conditions, leading to unpredictable outcomes.</li>
-</ul>
-<h3 id="3-practical-applications">3. Practical Applications</h3>
-<ul>
-<li><strong>Energy harvesting:</strong> Devices capturing mechanical energy from oscillations.</li>
-<li><strong>Suspension bridges:</strong> Avoiding resonance-induced destructive oscillations.</li>
-<li><strong>Oscillating circuits:</strong> Electrical analogs of forced damped pendulums.</li>
-</ul>
-<h3 id="4-implementation">4. Implementation</h3>
-<p>We simulate the motion of a forced damped pendulum using Python.</p>
-<pre><code class="language-python">import numpy as np
-from scipy.integrate import solve_ivp
+<hr/>
+<h2 id="3-practical-applications">3. Practical Applications</h2>
+<p>The forced damped pendulum model applies to many real-world systems:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Real-World Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Engineering</td>
+<td>Suspension bridges, where resonance from wind or traffic must be avoided (Tacoma Narrows Bridge collapse).</td>
+</tr>
+<tr>
+<td>Energy Harvesting</td>
+<td>Devices that capture oscillatory energy from mechanical vibrations (self-powered sensors).</td>
+</tr>
+<tr>
+<td>Clocks</td>
+<td>Analysis of pendulum motion in clock mechanisms.</td>
+</tr>
+<tr>
+<td>Electrical Circuits</td>
+<td>Driven RLC circuits are mathematically equivalent to a forced damped pendulum.</td>
+</tr>
+<tr>
+<td>Biomechanics</td>
+<td>Studying human gait patterns and walking dynamics.</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="4-python-implementation-for-simulation">4. Python Implementation for Simulation</h2>
+<h3 id="description">Description:</h3>
+<p>We simulate the system using the <code>solve_ivp</code> function from SciPy, varying the damping coefficient <span class="arithmatex">\(b\)</span>, driving amplitude <span class="arithmatex">\(A\)</span>, and driving frequency <span class="arithmatex">\(\omega\)</span> to observe different behaviors of the pendulum.</p>
+<hr/>
+<p>import numpy as np
 import matplotlib.pyplot as plt
-
-# Parameters
-g, L = 9.81, 1.0      # Gravity and pendulum length
-b, A, omega = 0.5, 1.2, 2.0
-
-# Differential equation
-def pendulum(t, y):
+from scipy.integrate import solve_ivp</p>
+<h1 id="constants">Constants</h1>
+<p>g = 9.81  # gravitational acceleration (m/s^2)</p>
+<h1 id="pendulum-differential-equation">Pendulum differential equation</h1>
+<p>def forced_damped_pendulum(t, y, b, A, omega, L):
     theta, omega_ = y
     dydt = [omega_, -b * omega_ - (g / L) * np.sin(theta) + A * np.cos(omega * t)]
-    return dydt
-
-# Initial conditions and time span
-y0 = [0.1, 0.0]
-t_span = (0, 50)
-t_eval = np.linspace(*t_span, 1000)
-
-# Solve the system
-sol = solve_ivp(pendulum, t_span, y0, t_eval=t_eval)
-
-# Plot results
-plt.figure(figsize=(8, 6))
-plt.plot(sol.t, sol.y[0])
-plt.xlabel('Time (s)')
-plt.ylabel('Angular displacement (rad)')
-plt.title('Forced Damped Pendulum Motion')
-plt.grid(True)
-plt.show()
+    return dydt</p>
+<h1 id="define-different-scenarios-to-study-dynamics">Define different scenarios to study dynamics</h1>
+<p>simulations = [
+    {"b": 0.2, "A": 1.2, "omega": 2.0, "L": 1.0, "label": "Underdamped"},
+    {"b": 1.5, "A": 1.2, "omega": 2.0, "L": 1.0, "label": "Overdamped"},
+    {"b": 0.5, "A": 2.0, "omega": 2.0, "L": 1.0, "label": "High Driving Force"},
+    {"b": 0.5, "A": 1.2, "omega": 3.0, "L": 1.0, "label": "Higher Frequency"},
+]</p>
+<p>t_span = (0, 50)
+t_eval = np.linspace(*t_span, 5000)
+y0 = [0.1, 0.0]</p>
+<p>results = []</p>
+<p>for sim in simulations:
+    sol = solve_ivp(forced_damped_pendulum, t_span, y0, t_eval=t_eval,
+                    args=(sim["b"], sim["A"], sim["omega"], sim["L"]))
+    results.append((sim["label"], sol.t, sol.y[0], sol.y[1]))</p>
+<h1 id="plot-results">Plot Results</h1>
+<p>fig, axs = plt.subplots(len(results), 2, figsize=(12, 10))</p>
+<p>for i, (label, t, theta, omega_) in enumerate(results):
+    axs[i, 0].plot(t, theta)
+    axs[i, 0].set_title(f"{label}: θ(t)")
+    axs[i, 0].set_xlabel("Time (s)")
+    axs[i, 0].set_ylabel("Angular Displacement (rad)")
+    axs[i, 0].grid(True)</p>
+<pre><code>axs[i, 1].plot(theta, omega_, alpha=0.8)
+axs[i, 1].set_title(f"{label}: Phase Portrait")
+axs[i, 1].set_xlabel("θ (rad)")
+axs[i, 1].set_ylabel("ω (rad/s)")
+axs[i, 1].grid(True)
 </code></pre>
-<p><img alt="alt text" src="../image-1.png"/></p>
-<h3 id="5-discussion">5. Discussion</h3>
-<p><strong>Limitations:</strong></p>
+<p>plt.tight_layout()
+plt.show()</p>
+<p><img alt="alt text" src="../image-2.png"/></p>
+<hr/>
+<h2 id="5-discussion-limitations">5. Discussion &amp; Limitations</h2>
+<h3 id="limitations-of-the-current-model">Limitations of the Current Model:</h3>
 <ul>
-<li>Assumes small-angle approximation for analytical simplicity.</li>
-<li>Ignores air resistance and other real-world frictions.</li>
+<li>Small-angle approximation is only valid for small displacements.</li>
+<li>Real-world frictions (nonlinear damping) are not considered.</li>
+<li>External forces are assumed to be purely sinusoidal and continuous.</li>
+<li>Numerical simulations rely on specific methods — accuracy depends on step size and method used.</li>
 </ul>
-<p><strong>Extensions:</strong></p>
+<hr/>
+<h3 id="possible-extensions-and-future-work">Possible Extensions and Future Work:</h3>
 <ul>
-<li>Include nonlinear damping.</li>
-<li>Explore non-periodic driving forces.</li>
-<li>Visualize phase portraits and Poincaré sections.</li>
+<li>Introduce nonlinear damping (air resistance quadratic in velocity).  </li>
+<li>Explore non-periodic driving forces (random noise, pulses).  </li>
+<li>Generate Poincaré sections for a more detailed analysis of chaotic motion.  </li>
+<li>Produce bifurcation diagrams to analyze transitions from regular to chaotic behavior.  </li>
+<li>Investigate energy transfer in the system over time.</li>
 </ul>
-<p>This analysis captures the complexity of a forced damped pendulum, bridging theory and computational exploration to reveal intricate dynamics like resonance and chaos.</p>
+<hr/>
+<h2 id="conclusion">Conclusion</h2>
+<p>This study of the forced damped pendulum reveals a fascinating range of physical behaviors depending on system parameters. We have demonstrated:</p>
+<ul>
+<li>Stable periodic motion under light forcing and damping.  </li>
+<li>Resonance effects when driving frequency matches the natural frequency.  </li>
+<li>The onset of chaotic behavior under certain conditions — a hallmark of nonlinear dynamics.  </li>
+</ul>
+<p>The forced damped pendulum is not just a theoretical model but a cornerstone for understanding oscillatory phenomena in nature and technology. The insights gained from this model are widely applicable in physics, engineering, and beyond.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
