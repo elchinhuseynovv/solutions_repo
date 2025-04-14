@@ -62,12 +62,14 @@ $$
 
 1. The Moon's Orbit Around Earth:
 
+
    - Orbital radius: approximately 384,400 km.
    - Orbital period: approximately 27.3 days.
    - Using Kepler's Law, this relationship holds true when considering Earth's mass.
 
 
 2. Planets in the Solar System:
+
 
    - Earth's orbital radius: 1 astronomical unit (AU), orbital period: 1 year.
    - Mars has an orbital radius of approximately 1.52 AU. Therefore, its period should be $T \approx \sqrt{1.52^3} \approx 1.87$ years, consistent with observations.
