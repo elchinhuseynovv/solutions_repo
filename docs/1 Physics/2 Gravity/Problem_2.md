@@ -9,7 +9,7 @@ Escape velocity is the minimum speed required for an object to break free from a
 
 ### **Definitions and Physical Meaning**
 
-1. **First Cosmic Velocity (Orbital Velocity)**:
+**First Cosmic Velocity (Orbital Velocity)**:
 
 The minimum speed required for an object to achieve a stable circular orbit around a celestial body.
 
@@ -22,7 +22,7 @@ Formula:
     - $M$ is the mass of the celestial body,
     - $r$ is the distance from the center of the body to the object.
 
-2. **Second Cosmic Velocity (Escape Velocity)**:
+**Second Cosmic Velocity (Escape Velocity)**:
 
 The minimum speed required for an object to escape the gravitational pull of a celestial body.
 
@@ -32,7 +32,7 @@ Formula:
     $$
     This is $\sqrt{2}$ times the first cosmic velocity.
 
-3. **Third Cosmic Velocity (Interstellar Escape Velocity)**:
+**Third Cosmic Velocity (Interstellar Escape Velocity)**:
 
 The minimum speed required for an object to escape the gravitational influence of a star system (e.g., the Solar System).
 
