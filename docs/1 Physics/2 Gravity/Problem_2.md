@@ -11,9 +11,9 @@ Escape velocity is the minimum speed required for an object to break free from a
 
 1. **First Cosmic Velocity (Orbital Velocity)**:
 
--- The minimum speed required for an object to achieve a stable circular orbit around a celestial body.
+The minimum speed required for an object to achieve a stable circular orbit around a celestial body.
 
--- Formula:
+Formula:
     $$
     v_1 = \sqrt{\frac{GM}{r}}
     $$
@@ -24,9 +24,9 @@ Escape velocity is the minimum speed required for an object to break free from a
 
 2. **Second Cosmic Velocity (Escape Velocity)**:
 
--- The minimum speed required for an object to escape the gravitational pull of a celestial body.
+The minimum speed required for an object to escape the gravitational pull of a celestial body.
 
--- Formula:
+Formula:
     $$
     v_2 = \sqrt{\frac{2GM}{r}}
     $$
@@ -34,9 +34,9 @@ Escape velocity is the minimum speed required for an object to break free from a
 
 3. **Third Cosmic Velocity (Interstellar Escape Velocity)**:
 
--- The minimum speed required for an object to escape the gravitational influence of a star system (e.g., the Solar System).
+The minimum speed required for an object to escape the gravitational influence of a star system (e.g., the Solar System).
 
--- Formula:
+Formula:
     $$
     v_3 = \sqrt{v_2^2 + v_{\text{esc, star}}^2}
     $$
