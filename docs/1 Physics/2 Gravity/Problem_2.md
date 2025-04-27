@@ -18,6 +18,7 @@ Formula:
     v_1 = \sqrt{\frac{GM}{r}}
     $$
     Where:
+    
     - $G$ is the gravitational constant,
     - $M$ is the mass of the celestial body,
     - $r$ is the distance from the center of the body to the object.
