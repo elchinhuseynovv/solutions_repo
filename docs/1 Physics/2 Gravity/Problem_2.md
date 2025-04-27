@@ -11,36 +11,36 @@ Escape velocity is the minimum speed required for an object to break free from a
 
 1. **First Cosmic Velocity (Orbital Velocity)**:
 
-   - The minimum speed required for an object to achieve a stable circular orbit around a celestial body.
+- The minimum speed required for an object to achieve a stable circular orbit around a celestial body.
 
-   - Formula:
-     $$
-     v_1 = \sqrt{\frac{GM}{r}}
-     $$
-     Where:
-     - $G$ is the gravitational constant,
-     - $M$ is the mass of the celestial body,
-     - $r$ is the distance from the center of the body to the object.
+- Formula:
+    $$
+    v_1 = \sqrt{\frac{GM}{r}}
+    $$
+    Where:
+    - $G$ is the gravitational constant,
+    - $M$ is the mass of the celestial body,
+    - $r$ is the distance from the center of the body to the object.
 
 2. **Second Cosmic Velocity (Escape Velocity)**:
 
-   - The minimum speed required for an object to escape the gravitational pull of a celestial body.
+- The minimum speed required for an object to escape the gravitational pull of a celestial body.
 
-   - Formula:
-     $$
-     v_2 = \sqrt{\frac{2GM}{r}}
-     $$
-     This is $\sqrt{2}$ times the first cosmic velocity.
+- Formula:
+    $$
+    v_2 = \sqrt{\frac{2GM}{r}}
+    $$
+    This is $\sqrt{2}$ times the first cosmic velocity.
 
 3. **Third Cosmic Velocity (Interstellar Escape Velocity)**:
 
-   - The minimum speed required for an object to escape the gravitational influence of a star system (e.g., the Solar System).
+- The minimum speed required for an object to escape the gravitational influence of a star system (e.g., the Solar System).
 
-   - Formula:
-     $$
-     v_3 = \sqrt{v_2^2 + v_{\text{esc, star}}^2}
-     $$
-     Where $v_{\text{esc, star}}$ is the escape velocity from the star's gravitational field at the object's location.
+- Formula:
+    $$
+    v_3 = \sqrt{v_2^2 + v_{\text{esc, star}}^2}
+    $$
+    Where $v_{\text{esc, star}}$ is the escape velocity from the star's gravitational field at the object's location.
 
 ---
 
