@@ -82,37 +82,52 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Constants
-G = 6.67430e-11  # Gravitational constant (N m^2/kg^2)
+G = 6.67430e-11  # Gravitational constant (m^3 kg^-1 s^-2)
 
-# Celestial body data (mass in kg, radius in meters)
+# Celestial body data (mass in kg, radius in meters, distance from Sun in meters)
 bodies = {
-    "Earth": {"mass": 5.972e24, "radius": 6.371e6},
-    "Mars": {"mass": 6.417e23, "radius": 3.389e6},
-    "Jupiter": {"mass": 1.898e27, "radius": 6.9911e7}
+    "Earth": {"mass": 5.972e24, "radius": 6.371e6, "orbit_radius": 1.496e11},
+    "Mars": {"mass": 6.417e23, "radius": 3.389e6, "orbit_radius": 2.279e11},
+    "Jupiter": {"mass": 1.898e27, "radius": 6.9911e7, "orbit_radius": 7.785e11}
 }
 
-# Function to calculate first cosmic velocity
+# Sun's mass
+M_sun = 1.989e30  # kg
+
+# Functions to calculate cosmic velocities
 def first_cosmic_velocity(mass, radius):
+    """
+    First cosmic velocity: Minimum velocity to enter orbit around the body.
+    v1 = sqrt(G * M / R)
+    """
     return np.sqrt(G * mass / radius)
 
-# Function to calculate second cosmic velocity
 def second_cosmic_velocity(mass, radius):
+    """
+    Second cosmic velocity: Minimum velocity to escape the body's gravity.
+    v2 = sqrt(2) * v1
+    """
     return np.sqrt(2 * G * mass / radius)
 
-# Function to calculate third cosmic velocity (approximation for Solar System)
-def third_cosmic_velocity(v2):
-    v_esc_sun = 617500  # Escape velocity from the Sun at Earth's orbit (m/s)
-    return np.sqrt(v2**2 + v_esc_sun**2)
+def third_cosmic_velocity(v2, orbit_radius):
+    """
+    Third cosmic velocity: Minimum velocity to escape the Solar System from the planet's orbit.
+    Approximation: v3 = sqrt(v2^2 + v_sun^2)
+    where v_sun = escape velocity from Sun at planet's orbit.
+    """
+    v_sun = np.sqrt(2 * G * M_sun / orbit_radius)
+    return np.sqrt(v2**2 + v_sun**2)
 
 # Calculate velocities for each body
 results = {}
 for body, data in bodies.items():
     v1 = first_cosmic_velocity(data["mass"], data["radius"])
     v2 = second_cosmic_velocity(data["mass"], data["radius"])
-    v3 = third_cosmic_velocity(v2)
+    v3 = third_cosmic_velocity(v2, data["orbit_radius"])
     results[body] = {"v1": v1, "v2": v2, "v3": v3}
 
 # Print results
+print("Cosmic Velocities (in km/s):\n")
 for body, velocities in results.items():
     print(f"{body}:")
     print(f"  First Cosmic Velocity (v1): {velocities['v1'] / 1000:.2f} km/s")
@@ -120,28 +135,30 @@ for body, velocities in results.items():
     print(f"  Third Cosmic Velocity (v3): {velocities['v3'] / 1000:.2f} km/s")
     print()
 
-# Plot results
+# Plotting the results
 labels = list(results.keys())
-v1_values = [results[body]["v1"] / 1000 for body in labels]
+v1_values = [results[body]["v1"] / 1000 for body in labels]  # km/s
 v2_values = [results[body]["v2"] / 1000 for body in labels]
 v3_values = [results[body]["v3"] / 1000 for body in labels]
 
 x = np.arange(len(labels))
-width = 0.2
+width = 0.25
 
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(12, 7))
 plt.bar(x - width, v1_values, width, label="First Cosmic Velocity (v1)")
 plt.bar(x, v2_values, width, label="Second Cosmic Velocity (v2)")
 plt.bar(x + width, v3_values, width, label="Third Cosmic Velocity (v3)")
 plt.xlabel("Celestial Body")
 plt.ylabel("Velocity (km/s)")
-plt.title("Cosmic Velocities for Earth, Mars, and Jupiter")
+plt.title("Cosmic Velocities for Celestial Bodies (Earth, Mars, Jupiter)")
 plt.xticks(x, labels)
 plt.legend()
-plt.grid(axis="y")
+plt.grid(axis="y", linestyle='--', alpha=0.7)
+plt.tight_layout()
 plt.show()
+
 ```
-![alt text](image-1.png)
+![alt text](image-6.png)
 ---
 
 ### **Graphical Representation**
