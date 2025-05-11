@@ -70,10 +70,6 @@
 </li>
 <li class="toctree-l4"><a class="reference internal" href="#python-implementation">Python Implementation</a>
 </li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#_1"></a>
-<ul>
 <li class="toctree-l4"><a class="reference internal" href="#graphical-representation">Graphical Representation</a>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="#discussion">Discussion</a>
@@ -235,96 +231,159 @@ The payload follows an open hyperbolic path and escapes Earth's gravitational in
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
-# Constants
-G = 6.67430e-11  # Gravitational constant (N m^2/kg^2)
-M = 5.972e24     # Mass of Earth (kg)
-R = 6.371e6      # Radius of Earth (m)
+# === Constants ===
+G = 6.67430e-11       # Gravitational constant (m^3 kg^-1 s^-2)
+M_earth = 5.972e24    # Mass of Earth (kg)
+R_earth = 6.371e6     # Radius of Earth (m)
+mu = G * M_earth      # Standard gravitational parameter (m^3/s^2)
 
-# Initial conditions
-altitude = 500e3  # Altitude above Earth's surface (m)
-v0 = 7500         # Initial velocity (m/s)
-theta = 45        # Launch angle (degrees)
+# === Utility Functions ===
+def compute_escape_velocity(r):
+    return np.sqrt(2 * mu / r)
 
-# Convert angle to radians
-theta = np.radians(theta)
+def compute_orbital_velocity(r):
+    return np.sqrt(mu / r)
 
-# Initial position and velocity
+def kinetic_energy(v, m=1):
+    return 0.5 * m * v**2
+
+def potential_energy(r, m=1):
+    return -mu * m / r
+
+def total_energy(r, v, m=1):
+    return kinetic_energy(v, m) + potential_energy(r, m)
+
+def classify_trajectory(energy):
+    if energy &lt; 0:
+        return "Bound Orbit (Elliptical or Circular)"
+    elif np.isclose(energy, 0, atol=1e-5):
+        return "Parabolic Trajectory"
+    else:
+        return "Escape Trajectory (Hyperbolic)"
+
+# === Initial Conditions ===
+altitude = 500e3        # Altitude above Earth's surface (m)
+v0 = 7500               # Initial speed (m/s)
+angle_deg = 45          # Launch angle from horizontal (degrees)
+
+# Convert angle to radians for calculations
+angle_rad = np.radians(angle_deg)
+
+# Initial position (x0, y0) and velocity components (vx0, vy0)
 x0 = 0
-y0 = R + altitude
-vx0 = v0 * np.cos(theta)
-vy0 = v0 * np.sin(theta)
+y0 = R_earth + altitude
+vx0 = v0 * np.cos(angle_rad)
+vy0 = v0 * np.sin(angle_rad)
 
-# Equations of motion
+# === Define Equations of Motion ===
 def equations(t, state):
     x, y, vx, vy = state
     r = np.sqrt(x**2 + y**2)
-    ax = -G * M * x / r**3
-    ay = -G * M * y / r**3
+    ax = -mu * x / r**3
+    ay = -mu * y / r**3
     return [vx, vy, ax, ay]
 
-# Event function: stop integration if payload hits Earth
+# === Define Event to Detect Earth Impact ===
 def hit_ground(t, state):
-    x, y, vx, vy = state
+    x, y, _, _ = state
     r = np.sqrt(x**2 + y**2)
-    return r - R  # Positive above ground, zero at impact
-hit_ground.terminal = True
-hit_ground.direction = -1
+    return r - R_earth
+hit_ground.terminal = True  # Stop the integration
+hit_ground.direction = -1   # Detect only when approaching Earth
 
-# Time span for simulation
-t_span = (0, 20000)  # Simulate up to 20,000 seconds
-t_eval = np.linspace(t_span[0], t_span[1], 5000)
+# === Time Span and Evaluation Points ===
+t_max = 20000  # Maximum simulation time in seconds
+t_points = 5000
+t_span = (0, t_max)
+t_eval = np.linspace(*t_span, t_points)
 
-# Initial state
-state0 = [x0, y0, vx0, vy0]
+# === Initial State Vector ===
+initial_state = [x0, y0, vx0, vy0]
 
-# Solve the differential equations
-sol = solve_ivp(
-    equations,
-    t_span,
-    state0,
+# === Solve ODE ===
+solution = solve_ivp(
+    fun=equations,
+    t_span=t_span,
+    y0=initial_state,
     t_eval=t_eval,
     method="RK45",
-    events=hit_ground
+    events=hit_ground,
+    rtol=1e-9,
+    atol=1e-10
 )
 
-# Extract results
-x = sol.y[0]
-y = sol.y[1]
+# === Extract Results ===
+x, y = solution.y[0], solution.y[1]
+vx, vy = solution.y[2], solution.y[3]
+t = solution.t
 
-# Plot the trajectory
-fig, ax = plt.subplots(figsize=(10, 8))
+# === Plotting Functions ===
+def plot_trajectory(x, y):
+    fig, ax = plt.subplots(figsize=(10, 8))
+    earth = plt.Circle((0, 0), R_earth, color='blue', alpha=0.4, label='Earth')
+    ax.add_artist(earth)
+    ax.plot(x, y, color='red', label='Payload Trajectory')
+    ax.plot(x[0], y[0], 'go', label='Start Point')
+    ax.plot(x[-1], y[-1], 'kx', label='End Point')
+    ax.set_aspect('equal')
+    ax.set_xlim(min(x)*1.1, max(x)*1.1)
+    ax.set_ylim(min(y)*1.1, max(y)*1.1)
+    ax.set_xlabel('x position (m)', fontsize=12)
+    ax.set_ylabel('y position (m)', fontsize=12)
+    ax.set_title('Trajectory of a Freely Released Payload Near Earth', fontsize=14)
+    ax.legend()
+    ax.grid(True)
+    plt.tight_layout()
+    plt.savefig("trajectory.png")  # Save image
+    plt.show()
 
-# Plot Earth
-earth = plt.Circle((0, 0), R, color="blue", alpha=0.5, label="Earth")
-ax.add_artist(earth)
+def plot_energy(t, x, y, vx, vy):
+    r = np.sqrt(x**2 + y**2)
+    v = np.sqrt(vx**2 + vy**2)
+    ke = kinetic_energy(v)
+    pe = potential_energy(r)
+    te = ke + pe
+    plt.figure(figsize=(10, 6))
+    plt.plot(t, ke, label='Kinetic Energy')
+    plt.plot(t, pe, label='Potential Energy')
+    plt.plot(t, te, label='Total Energy', linestyle='--')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Energy (J)')
+    plt.title('Energy vs Time')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("energy_plot.png")  # Save image
+    plt.show()
 
-# Plot trajectory
-ax.plot(x, y, label="Payload Trajectory", color="red")
+# === Run Visualizations ===
+plot_trajectory(x, y)
+plot_energy(t, x, y, vx, vy)
 
-# Mark starting point
-ax.plot(x[0], y[0], 'go', markersize=8, label="Start Point")
+# === Output Results ===
+r0 = np.sqrt(x0**2 + y0**2)
+v_initial = np.sqrt(vx0**2 + vy0**2)
+e_initial = total_energy(r0, v_initial)
+traj_type = classify_trajectory(e_initial)
 
-# Mark ending point (impact or end of simulation)
-ax.plot(x[-1], y[-1], 'kx', markersize=8, label="End Point")
+print(f"Initial speed: {v_initial:.2f} m/s")
+print(f"Escape velocity at {altitude/1000:.0f} km: {compute_escape_velocity(R_earth + altitude):.2f} m/s")
+print(f"Orbital velocity at {altitude/1000:.0f} km: {compute_orbital_velocity(R_earth + altitude):.2f} m/s")
+print(f"Initial total mechanical energy: {e_initial:.2e} J")
+print(f"Predicted trajectory type: {traj_type}")
 
-# Set plot properties
-ax.set_xlabel("x position (meters)")
-ax.set_ylabel("y position (meters)")
-ax.set_title("Trajectory of a Freely Released Payload Near Earth")
-ax.axis('equal')
-ax.legend()
-ax.grid(True)
-
-plt.show()
-
-# Additional info: Did the payload crash into Earth?
-if sol.status == 1:
-    print(f"Payload impacted Earth at time {sol.t_events[0][0]:.2f} seconds.")
+if solution.status == 1:
+    impact_time = solution.t_events[0][0]
+    print(f"\nPayload impacted Earth at t = {impact_time:.2f} seconds.")
+    print(f"Impact location: x = {x[-1]:.2f} m, y = {y[-1]:.2f} m")
 else:
-    print("Payload did not impact Earth during simulation.")
+    print("\nPayload did not impact Earth within simulation time.")
+    print(f"Final location: x = {x[-1]:.2f} m, y = {y[-1]:.2f} m")
 
 </code></pre>
-<h2 id="_1"><img alt="alt text" src="../image-7.png"/></h2>
+<p><img alt="alt text" src="../image-8.png"/>
+<img alt="alt text" src="../image-9.png"/></p>
+<hr/>
 <h3 id="graphical-representation"><strong>Graphical Representation</strong></h3>
 <p>The plot generated by the script shows the trajectory of the payload. Depending on the initial velocity and angle, the trajectory can be elliptical, parabolic, or hyperbolic.</p>
 <hr/>
